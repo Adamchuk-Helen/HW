@@ -179,12 +179,19 @@ namespace Curs1
             this.user_name = user_name;
             this.user_surname = user_surname;
             this.user_phone = user_phone;
-            File.Create(user_login + ".xml");
+
+            //File.Create(user_login + ".xml");
+            using (FileStream fs1 = new FileStream(user_login + ".xml", FileMode.Create))
+            {
+                fs1.Close();
+            }
+
             user.Add(new User(user_login, user_pass, user_name, user_surname, user_phone));
 
             using (FileStream fs = new FileStream("users.xml", FileMode.OpenOrCreate))
             {
                 myDeserializer.Serialize(fs, user);
+                fs.Close();
             }
             Menu();
         }
@@ -415,6 +422,7 @@ namespace Curs1
                     if (user_login == u.user_login)
                     {
                         user.RemoveAt(counter);
+                        break;
                     }
                     else { counter++; }
 
